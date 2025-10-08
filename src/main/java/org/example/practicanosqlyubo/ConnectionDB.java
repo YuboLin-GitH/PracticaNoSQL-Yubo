@@ -2,6 +2,7 @@ package org.example.practicanosqlyubo;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import org.example.practicanosqlyubo.util.R;
 
 import java.util.Properties;
 
