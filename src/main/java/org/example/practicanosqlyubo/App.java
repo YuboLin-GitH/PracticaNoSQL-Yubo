@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.practica1medicoyubo.util.R;
+import org.example.practicanosqlyubo.util.R;
 
 
 

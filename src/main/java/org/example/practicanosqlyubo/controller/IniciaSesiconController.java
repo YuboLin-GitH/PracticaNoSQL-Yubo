@@ -10,9 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import org.example.practica1medicoyubo.DAO.UsuarioDAO;
-import org.example.practica1medicoyubo.domain.Paciente;
-import org.example.practica1medicoyubo.util.R;
+import org.example.practicanosqlyubo.DAO.UsuarioDAO;
+import org.example.practicanosqlyubo.domain.Paciente;
+import org.example.practicanosqlyubo.util.R;
 
 
 public class IniciaSesiconController {

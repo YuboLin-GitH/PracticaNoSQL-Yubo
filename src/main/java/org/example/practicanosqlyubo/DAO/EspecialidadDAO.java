@@ -1,7 +1,7 @@
 package org.example.practicanosqlyubo.DAO;
 
-import org.example.practica1medicoyubo.domain.Especialidad;
-import org.example.practica1medicoyubo.util.R;
+import org.example.practicanosqlyubo.domain.Especialidad;
+import org.example.practicanosqlyubo.util.R;
 
 import java.io.IOException;
 import java.sql.*;
@@ -9,15 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-/**
- * ClassName: EspecialidadDAO
- * Package: org.example.practica1medicoyubo.DAO
- * Description:
- *
- * @Author Yubo
- * @Create 05/10/2025 19:59
- * @Version 1.0
- */
+
 public class EspecialidadDAO {
 
     private Connection conexion;

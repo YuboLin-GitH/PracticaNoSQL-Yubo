@@ -1,22 +1,13 @@
 package org.example.practicanosqlyubo.DAO;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.example.practica1medicoyubo.domain.Paciente;
-import org.example.practica1medicoyubo.util.R;
+import org.example.practicanosqlyubo.domain.Paciente;
+import org.example.practicanosqlyubo.util.R;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-/**
- * ClassName: UsuarioDAO
- * Package: org.example.practica1medicoyubo.DAO
- * Description:
- *
- * @Author Yubo
- * @Create 28/09/2025 22:07
- * @Version 1.0
- */
 public class UsuarioDAO {
 
     private Connection conexion;

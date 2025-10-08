@@ -1,14 +1,6 @@
 package org.example.practicanosqlyubo.domain;
 
-/**
- * ClassName: Especialidad
- * Package: org.example.practica1medicoyubo.domain
- * Description:
- *
- * @Author Yubo
- * @Create 28/09/2025 16:18
- * @Version 1.0
- */
+
 public class Especialidad {
     private int idEsp;
     private String nombreEsp;

@@ -1,7 +1,7 @@
 package org.example.practicanosqlyubo.DAO;
 
-import org.example.practica1medicoyubo.domain.Cita;
-import org.example.practica1medicoyubo.util.R;
+import org.example.practicanosqlyubo.domain.Cita;
+import org.example.practicanosqlyubo.util.R;
 
 import java.io.IOException;
 import java.sql.*;
