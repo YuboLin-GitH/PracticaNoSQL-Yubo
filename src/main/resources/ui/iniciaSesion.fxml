@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #d9a7d7;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.practica1medicoyubo.controller.IniciaSesiconController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #d9a7d7;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.practicanosqlyubo.controller.IniciaSesiconController">
     <children>
         <Circle fill="#f5f5f5" layoutX="311.0" layoutY="31.0" radius="17.0" stroke="BLACK" strokeType="INSIDE" />
         <Label contentDisplay="TOP" layoutX="187.0" layoutY="86.0" prefHeight="77.0" prefWidth="267.0" text="   User    Login" textAlignment="CENTER" textFill="#fcfcfc">

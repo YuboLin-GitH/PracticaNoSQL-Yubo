@@ -1,73 +1,38 @@
 package org.example.practicanosqlyubo.domain;
 
-import java.util.Date;
+public class Cita {
+    private String id;
+    private String dni;
+    private String nombre;
+    private String direccion;
+    private String telefono;
+    private String fecha;
+    private String especialidad;
 
-public class Cita  {
-    private int idCita;
-    private Date fechaCita;
-    private int fkIdPaciente;
-    private int fkIdEsp;
-    private String nombreEsp;
 
-    public Cita() {
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public Cita(int idCita, Date fechaCita, int fkIdPaciente, int fkIdEsp, String nombreEsp) {
-        this.idCita = idCita;
-        this.fechaCita = fechaCita;
-        this.fkIdPaciente = fkIdPaciente;
-        this.fkIdEsp = fkIdEsp;
-        this.nombreEsp = nombreEsp;
-    }
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
 
-    public int getIdCita() {
-        return idCita;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setIdCita(int idCita) {
-        this.idCita = idCita;
-    }
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public Date getFechaCita() {
-        return fechaCita;
-    }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public void setFechaCita(Date fechaCita) {
-        this.fechaCita = fechaCita;
-    }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
-    public int getFkIdPaciente() {
-        return fkIdPaciente;
-    }
-
-    public void setFkIdPaciente(int fkIdPaciente) {
-        this.fkIdPaciente = fkIdPaciente;
-    }
-
-    public int getFkIdEsp() {
-        return fkIdEsp;
-    }
-
-    public void setFkIdEsp(int fkIdEsp) {
-        this.fkIdEsp = fkIdEsp;
-    }
-
-    public String getNombreEsp() {
-        return nombreEsp;
-    }
-
-    public void setNombreEsp(String nombreEsp) {
-        this.nombreEsp = nombreEsp;
-    }
+    public String getEspecialidad() { return especialidad; }
+    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
 
     @Override
     public String toString() {
-        return "Cita{" +
-                "idCita=" + idCita +
-                ", fechaCita=" + fechaCita +
-                ", fkIdPaciente=" + fkIdPaciente +
-                ", fkIdEsp=" + fkIdEsp +
-                ", nombreEsp='" + nombreEsp + '\'' +
-                '}';
+        return dni + " - " + especialidad + " (" + fecha + ")";
     }
 }

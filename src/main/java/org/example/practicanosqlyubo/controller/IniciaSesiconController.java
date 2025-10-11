@@ -1,109 +1,87 @@
 package org.example.practicanosqlyubo.controller;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import org.example.practicanosqlyubo.DAO.UsuarioDAO;
-import org.example.practicanosqlyubo.domain.Paciente;
+import org.bson.Document;
+import org.example.practicanosqlyubo.ConnectionDB;
 import org.example.practicanosqlyubo.util.R;
 
 
-public class IniciaSesiconController {
+import java.io.IOException;
 
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+public class IniciaSesiconController {
 
     @FXML
     private TextField tfPaciente;
+
     @FXML
     private PasswordField pfPassword;
 
-
     @FXML
-    private Button btIniciar;
-
-    @FXML
-    public void initialize() {
-
-        tfPaciente.setOnKeyPressed(this::handleEnterKey);
-        pfPassword.setOnKeyPressed(this::handleEnterKey);
-    }
-
-
-    private void handleEnterKey(KeyEvent event) {
-
-        if (event.getCode() == KeyCode.ENTER) {
-            validarUsuario();
-        }
-    }
-
-    @FXML
-    private void validarUsuario() {
-        String nombre = tfPaciente.getText().trim();
+    private void validarUsuario(ActionEvent event) {
+        String usuario = tfPaciente.getText().trim();
         String password = pfPassword.getText().trim();
 
-        if (nombre.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Error", "Por favor, rellene todos los campos.", Alert.AlertType.ERROR);
+        if (usuario.isEmpty() || password.isEmpty()) {
+            mostrarAlerta("Por favor, complete todos los campos.");
             return;
         }
 
-        try {
-            usuarioDAO.conectar();
+        // Conexión a MongoDB
+        MongoClient con = ConnectionDB.conectar();
+        MongoDatabase db = con.getDatabase("centro_medico");
+        MongoCollection<Document> col = db.getCollection("pacientes");
 
-            Paciente paciente = usuarioDAO.valiadarUsuario(nombre, password);
+        // Buscar usuario
+        Document paciente = col.find(new Document("nombre", usuario)
+                .append("password", password)).first();
+        if (paciente != null) {
+            try {
+                // Cargar la ventana de gestión de citas
+                FXMLLoader loader = new FXMLLoader(R.getUI("citas.fxml"));
+                Scene scene = new Scene(loader.load());
 
-            if (paciente != null) {
-                mostrarAlerta("Éxito", "Inicio de sesión correcto ", Alert.AlertType.INFORMATION);
-                abrirVentanaCita(paciente);
-                Stage stage = (Stage) btIniciar.getScene().getWindow();
-                stage.close();
-            } else {
-                mostrarAlerta("Error", "Usuario o contraseña incorrectos ", Alert.AlertType.ERROR);
+                // Pasar datos del paciente al siguiente controlador
+                CitaController citaController = loader.getController();
+                citaController.cargarPaciente(
+                        paciente.getString("dni"),
+                        paciente.getString("nombre"),
+                        paciente.getString("direccion"),
+                        paciente.get("telefono").toString()
+                );
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Gestión de Citas - Centro Médico San Mateo");
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error cargando la ventana de citas.");
             }
 
-        } catch (Exception e) {
-            mostrarAlerta("Error", "Error al conectar con la base de datos", Alert.AlertType.ERROR);
-            e.printStackTrace();
+        } else {
+            mostrarAlerta("Usuario o contraseña incorrectos.");
         }
 
-        tfPaciente.clear();
-        pfPassword.clear();
+        con.close();
     }
 
-
-    private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Inicio de sesión");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
-
-    private void abrirVentanaCita(Paciente paciente) {
-        try {
-            FXMLLoader loader = new FXMLLoader(R.getUI("citas.fxml"));
-            Scene scene = new Scene(loader.load());
-            CitaController citaController = loader.getController();
-            citaController.setPaciente(paciente);
-            Stage stage = new Stage();
-            stage.setTitle("Panel cita");
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            mostrarAlerta("Error", "No se pudo abrir la ventana principal", Alert.AlertType.ERROR);
-        }
-    }
-
-
-
 }
-
-
