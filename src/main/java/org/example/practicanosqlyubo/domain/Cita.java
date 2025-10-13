@@ -1,6 +1,7 @@
 package org.example.practicanosqlyubo.domain;
 
 public class Cita {
+    private int idCita;
     private String id;
     private String dni;
     private String nombre;
@@ -9,6 +10,9 @@ public class Cita {
     private String fecha;
     private String especialidad;
 
+
+    public int getIdCita() { return idCita; }
+    public void setIdCita(int idCita) { this.idCita = idCita; }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

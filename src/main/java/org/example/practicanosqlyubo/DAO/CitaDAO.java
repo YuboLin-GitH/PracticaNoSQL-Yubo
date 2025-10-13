@@ -16,7 +16,14 @@ public class CitaDAO {
         MongoClient con = ConnectionDB.conectar();
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("citas");
+        int maxId = 0;
+        for (Document d : col.find()) {
+            int thisId = d.getInteger("idCita", 0);
+            if (thisId > maxId) maxId = thisId;
+        }
+        int nextId = maxId + 1;
         Document doc = new Document()
+                .append("idCita", nextId)
                 .append("dni", cita.getDni())
                 .append("nombre", cita.getNombre())
                 .append("direccion", cita.getDireccion())
@@ -35,6 +42,7 @@ public class CitaDAO {
         for (Document d : col.find(new Document("dni", dni))) {
             Cita cita = new Cita();
             cita.setId(d.getObjectId("_id").toString());
+            cita.setIdCita(d.getInteger("idCita", 0));
             cita.setDni(d.getString("dni"));
             cita.setNombre(d.getString("nombre"));
             cita.setDireccion(d.getString("direccion"));
@@ -51,20 +59,23 @@ public class CitaDAO {
         MongoClient con = ConnectionDB.conectar();
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("citas");
-        Document query = new Document("dni", cita.getDni()).append("fecha", cita.getFecha());
+
+        Document query = new Document("idCita", cita.getIdCita());
         Document update = new Document("$set", new Document("especialidad", cita.getEspecialidad())
                 .append("nombre", cita.getNombre())
                 .append("direccion", cita.getDireccion())
-                .append("telefono", cita.getTelefono()));
+                .append("telefono", cita.getTelefono())
+                .append("fecha", cita.getFecha())
+                .append("dni", cita.getDni()));
         col.updateOne(query, update);
         con.close();
     }
 
-    public static void borrarCita(String dni, String fecha) {
+    public static void borrarCita(int idCita) {
         MongoClient con = ConnectionDB.conectar();
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("citas");
-        Document query = new Document("dni", dni).append("fecha", fecha);
+        Document query = new Document("idCita", idCita);
         col.deleteOne(query);
         con.close();
     }
