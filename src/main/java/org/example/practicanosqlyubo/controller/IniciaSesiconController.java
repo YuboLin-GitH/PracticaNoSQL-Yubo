@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.bson.Document;
 import org.example.practicanosqlyubo.ConnectionDB;
+import org.example.practicanosqlyubo.util.HashUtil;
 import org.example.practicanosqlyubo.util.R;
 
 
@@ -30,9 +31,11 @@ public class IniciaSesiconController {
     @FXML
     private void validarUsuario(ActionEvent event) {
         String usuario = tfPaciente.getText().trim();
-        String password = pfPassword.getText().trim();
+        String inputPw = pfPassword.getText().trim();
+        String encryptedPw = HashUtil.sha256(inputPw);
 
-        if (usuario.isEmpty() || password.isEmpty()) {
+
+        if (usuario.isEmpty() || encryptedPw.isEmpty()) {
             mostrarAlerta("Por favor, complete todos los campos.");
             return;
         }
@@ -44,7 +47,7 @@ public class IniciaSesiconController {
 
         // Buscar usuario
         Document paciente = col.find(new Document("nombre", usuario)
-                .append("password", password)).first();
+                .append("password", encryptedPw)).first();
         if (paciente != null) {
             try {
                 // Cargar la ventana de gestión de citas
@@ -84,4 +87,6 @@ public class IniciaSesiconController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+
 }

@@ -4,6 +4,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.example.practicanosqlyubo.util.HashUtil;
+
 
 public class CrearUsuarioPaciente {
     public static void main(String[] args) {
@@ -11,10 +13,14 @@ public class CrearUsuarioPaciente {
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("pacientes");
 
+
+        String plainPassword = "david";
+        String encrypted = HashUtil.sha256(plainPassword);
+
         Document paciente = new Document()
                 .append("dni", "12345678B")
                 .append("nombre", "David")
-                .append("password", "david")   // 密码字段与登录验证一致
+                .append("password", encrypted)
                 .append("direccion", "C/ Nueva, 2")
                 .append("telefono", 605048521);
 
