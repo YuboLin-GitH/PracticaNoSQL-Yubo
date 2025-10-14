@@ -1,11 +1,10 @@
-package org.example.practicanosqlyubo.util;
+package org.example.practicanosqlyubo;
 
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.example.practicanosqlyubo.ConnectionDB;
 import org.example.practicanosqlyubo.domain.Especialidad;
 import java.io.FileReader;
 import java.io.Reader;
