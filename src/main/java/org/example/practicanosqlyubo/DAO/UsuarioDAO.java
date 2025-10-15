@@ -10,7 +10,7 @@ import org.example.practicanosqlyubo.domain.Paciente;
 public class UsuarioDAO {
 
 
-    public static Paciente buscarPorCredenciales(String nombre, String password) {
+    public static Paciente buscarPorDato(String nombre, String password) {
         MongoClient con = ConnectionDB.conectar();
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("pacientes");

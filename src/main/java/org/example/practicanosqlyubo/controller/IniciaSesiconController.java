@@ -37,7 +37,7 @@ public class IniciaSesiconController {
             return;
         }
 
-        Paciente paciente = UsuarioDAO.buscarPorCredenciales(usuario, encryptedPw);
+        Paciente paciente = UsuarioDAO.buscarPorDato(usuario, encryptedPw);
 
         if (paciente != null) {
             try {
