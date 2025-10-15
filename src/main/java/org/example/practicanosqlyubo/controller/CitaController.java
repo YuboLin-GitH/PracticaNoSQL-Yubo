@@ -1,20 +1,16 @@
 package org.example.practicanosqlyubo.controller;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.bson.Document;
-import org.example.practicanosqlyubo.util.ConnectionDB;
+import org.example.practicanosqlyubo.DAO.EspecialidadDAO;
 import org.example.practicanosqlyubo.DAO.CitaDAO;
 import org.example.practicanosqlyubo.domain.Cita;
 import org.example.practicanosqlyubo.domain.Especialidad;
-import org.example.practicanosqlyubo.domain.Paciente;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CitaController {
@@ -23,10 +19,9 @@ public class CitaController {
     @FXML private DatePicker dpFechaCita;
     @FXML private ComboBox<Especialidad> cbEspecialidad;
     @FXML private TableView<Cita> tvCitasPaciente;
-    @FXML private TableColumn<Cita, Integer> colIdCita;    // 必须用Integer
+    @FXML private TableColumn<Cita, Integer> colIdCita;
     @FXML private TableColumn<Cita, String> colFecha, colEspecialidad;
 
-    private Paciente paciente;
 
     public void initialize() {
         cargarEspecialidades();
@@ -47,18 +42,8 @@ public class CitaController {
     }
 
     private void cargarEspecialidades() {
-        List<Especialidad> lista = new ArrayList<>();
-        MongoClient con = ConnectionDB.conectar();
-        MongoDatabase db = con.getDatabase("centro_medico");
-        MongoCollection<Document> col = db.getCollection("especialidades");
-
-        for (Document d : col.find()) {
-            Especialidad e = new Especialidad();
-            e.setNombre(d.getString("nombre"));
-            lista.add(e);
-        }
+        List<Especialidad> lista = EspecialidadDAO.obtenerTodas();
         cbEspecialidad.setItems(FXCollections.observableArrayList(lista));
-        con.close();
     }
 
     @FXML
@@ -85,7 +70,7 @@ public class CitaController {
         if (citaSeleccionada != null && cbEspecialidad.getValue() != null && dpFechaCita.getValue() != null) {
             citaSeleccionada.setFecha(dpFechaCita.getValue().toString());
             citaSeleccionada.setEspecialidad(cbEspecialidad.getValue().getNombre());
-            // 你也可以同步改其它字段
+
             CitaDAO.modificarCita(citaSeleccionada);
             mostrarCitas();
         }
@@ -120,9 +105,9 @@ public class CitaController {
     private void verSeleccionarCita() {
         Cita c = tvCitasPaciente.getSelectionModel().getSelectedItem();
         if (c != null) {
-            // 设置 日期（DatePicker）
+
             dpFechaCita.setValue(java.time.LocalDate.parse(c.getFecha()));
-            // 设置 专科（ComboBox）
+
             for (Especialidad e : cbEspecialidad.getItems()) {
                 if (e.getNombre().equals(c.getEspecialidad())) {
                     cbEspecialidad.setValue(e);

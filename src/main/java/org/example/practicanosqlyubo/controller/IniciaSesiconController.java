@@ -1,8 +1,5 @@
 package org.example.practicanosqlyubo.controller;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.bson.Document;
-import org.example.practicanosqlyubo.util.ConnectionDB;
+import org.example.practicanosqlyubo.DAO.UsuarioDAO;
+import org.example.practicanosqlyubo.domain.Paciente;
 import org.example.practicanosqlyubo.util.HashUtil;
 import org.example.practicanosqlyubo.util.R;
 
@@ -40,14 +37,8 @@ public class IniciaSesiconController {
             return;
         }
 
-        // Conexión a MongoDB
-        MongoClient con = ConnectionDB.conectar();
-        MongoDatabase db = con.getDatabase("centro_medico");
-        MongoCollection<Document> col = db.getCollection("pacientes");
+        Paciente paciente = UsuarioDAO.buscarPorCredenciales(usuario, encryptedPw);
 
-        // Buscar usuario
-        Document paciente = col.find(new Document("nombre", usuario)
-                .append("password", encryptedPw)).first();
         if (paciente != null) {
             try {
                 // Cargar la ventana de gestión de citas
@@ -57,10 +48,10 @@ public class IniciaSesiconController {
                 // Pasar datos del paciente al siguiente controlador
                 CitaController citaController = loader.getController();
                 citaController.cargarPaciente(
-                        paciente.getString("dni"),
-                        paciente.getString("nombre"),
-                        paciente.getString("direccion"),
-                        paciente.get("telefono").toString()
+                        paciente.getDni(),
+                        paciente.getNombre(),
+                        paciente.getDireccion(),
+                        String.valueOf(paciente.getTelefono())
                 );
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -77,7 +68,6 @@ public class IniciaSesiconController {
             mostrarAlerta("Usuario o contraseña incorrectos.");
         }
 
-        con.close();
     }
 
     private void mostrarAlerta(String mensaje) {

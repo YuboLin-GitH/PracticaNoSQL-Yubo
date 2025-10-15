@@ -26,4 +26,5 @@ public class EspecialidadDAO {
         mongoClient.close();
         return especialidades;
     }
+
 }

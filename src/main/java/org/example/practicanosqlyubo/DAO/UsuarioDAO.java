@@ -9,11 +9,13 @@ import org.example.practicanosqlyubo.domain.Paciente;
 
 public class UsuarioDAO {
 
-    public static Paciente buscarPorDni(String dni) {
+
+    public static Paciente buscarPorCredenciales(String nombre, String password) {
         MongoClient con = ConnectionDB.conectar();
         MongoDatabase db = con.getDatabase("centro_medico");
         MongoCollection<Document> col = db.getCollection("pacientes");
-        Document doc = col.find(new Document("dni", dni)).first();
+        Document doc = col.find(new Document("nombre", nombre)
+                .append("password", password)).first();
         Paciente paciente = null;
         if (doc != null) {
             paciente = new Paciente();
@@ -26,16 +28,5 @@ public class UsuarioDAO {
         }
         con.close();
         return paciente;
-    }
-
-    public static boolean validarUsuario(String nombre, String password) {
-        MongoClient con = ConnectionDB.conectar();
-        MongoDatabase db = con.getDatabase("centro_medico");
-        MongoCollection<Document> col = db.getCollection("pacientes");
-        Document doc = col.find(new Document("nombre", nombre)
-                .append("password", password)).first();
-        boolean valido = doc != null;
-        con.close();
-        return valido;
     }
 }
