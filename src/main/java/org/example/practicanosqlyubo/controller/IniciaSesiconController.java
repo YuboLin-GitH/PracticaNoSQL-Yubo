@@ -13,7 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.bson.Document;
-import org.example.practicanosqlyubo.ConnectionDB;
+import org.example.practicanosqlyubo.util.ConnectionDB;
 import org.example.practicanosqlyubo.util.HashUtil;
 import org.example.practicanosqlyubo.util.R;
 
@@ -65,7 +65,7 @@ public class IniciaSesiconController {
 
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
-                stage.setTitle("Gestión de Citas - Centro Médico San Mateo");
+                stage.setTitle("Gestión de Citas");
                 stage.show();
 
             } catch (IOException e) {

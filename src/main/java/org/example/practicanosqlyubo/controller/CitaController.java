@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.bson.Document;
-import org.example.practicanosqlyubo.ConnectionDB;
+import org.example.practicanosqlyubo.util.ConnectionDB;
 import org.example.practicanosqlyubo.DAO.CitaDAO;
 import org.example.practicanosqlyubo.domain.Cita;
 import org.example.practicanosqlyubo.domain.Especialidad;
@@ -99,7 +99,7 @@ public class CitaController {
             mostrarCitas();
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("请选择要删除的约诊记录");
+            alert.setContentText("Elegir cita te quire eliminar ");
             alert.showAndWait();
         }
     }

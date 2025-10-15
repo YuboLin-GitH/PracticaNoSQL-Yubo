@@ -6,6 +6,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.example.practicanosqlyubo.domain.Especialidad;
+import org.example.practicanosqlyubo.util.ConnectionDB;
+
 import java.io.FileReader;
 import java.io.Reader;
 
