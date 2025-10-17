@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.practicanosqlyubo.DAO.UsuarioDAO;
 import org.example.practicanosqlyubo.domain.Paciente;
+import org.example.practicanosqlyubo.util.AlertUtils;
 import org.example.practicanosqlyubo.util.HashUtil;
 import org.example.practicanosqlyubo.util.R;
 
@@ -33,7 +34,7 @@ public class IniciaSesiconController {
 
 
         if (usuario.isEmpty() || encryptedPw.isEmpty()) {
-            mostrarAlerta("Por favor, complete todos los campos.");
+            AlertUtils.mostrarError("Error, Por favor, rellene todos los campos.");
             return;
         }
 
@@ -42,6 +43,7 @@ public class IniciaSesiconController {
         if (paciente != null) {
             try {
                 // Cargar la ventana de gestión de citas
+                AlertUtils.mostrarInformacion("Éxito, Inicio de sesión correcto ");
                 FXMLLoader loader = new FXMLLoader(R.getUI("citas.fxml"));
                 Scene scene = new Scene(loader.load());
 
@@ -61,22 +63,15 @@ public class IniciaSesiconController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                mostrarAlerta("Error cargando la ventana de citas.");
+                AlertUtils.mostrarError("Error al conectar con la base de datos");
             }
 
         } else {
-            mostrarAlerta("Usuario o contraseña incorrectos.");
+            AlertUtils.mostrarError("Error， Usuario o contraseña incorrectos ");
         }
 
     }
 
-    private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Inicio de sesión");
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 
 
 }

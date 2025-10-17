@@ -8,6 +8,7 @@ import org.example.practicanosqlyubo.DAO.EspecialidadDAO;
 import org.example.practicanosqlyubo.DAO.CitaDAO;
 import org.example.practicanosqlyubo.domain.Cita;
 import org.example.practicanosqlyubo.domain.Especialidad;
+import org.example.practicanosqlyubo.util.AlertUtils;
 
 
 import java.util.List;
@@ -47,15 +48,28 @@ public class CitaController {
 
     @FXML
     private void nuevaCita() {
-        Cita c = new Cita();
-        c.setDni(tfDNI.getText());
-        c.setNombre(tfNombre.getText());
-        c.setDireccion(tfDireccion.getText());
-        c.setTelefono(tfTelefono.getText());
-        c.setFecha(dpFechaCita.getValue().toString());
-        c.setEspecialidad(cbEspecialidad.getValue().getNombre());
-        CitaDAO.insertarCita(c);       // DAO自动分配idCita
-        mostrarCitas();
+        try {
+            if (cbEspecialidad.getValue() == null || dpFechaCita.getValue() == null) {
+                AlertUtils.mostrarError("Por favor, completa todos los campos requeridos.");
+                return;
+            }
+
+            Cita c = new Cita();
+            c.setDni(tfDNI.getText());
+            c.setNombre(tfNombre.getText());
+            c.setDireccion(tfDireccion.getText());
+            c.setTelefono(tfTelefono.getText());
+            c.setFecha(dpFechaCita.getValue().toString());
+            c.setEspecialidad(cbEspecialidad.getValue().getNombre());
+
+            CitaDAO.insertarCita(c);
+            AlertUtils.mostrarInformacion("Cita guardada correctamente.");
+            mostrarCitas();
+            limpiarCajas();
+
+        } catch (Exception e) {
+            AlertUtils.mostrarError("Error al guardar la cita: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -65,26 +79,52 @@ public class CitaController {
 
     @FXML
     private void modificarCita() {
-        Cita citaSeleccionada = tvCitasPaciente.getSelectionModel().getSelectedItem();
-        if (citaSeleccionada != null && cbEspecialidad.getValue() != null && dpFechaCita.getValue() != null) {
+        try {
+            Cita citaSeleccionada = tvCitasPaciente.getSelectionModel().getSelectedItem();
+
+
+            if (citaSeleccionada == null) {
+                AlertUtils.mostrarError("Por favor, selecciona una cita para modificar.");
+                return;
+            }
+            if (dpFechaCita.getValue() == null || cbEspecialidad.getValue() == null) {
+                AlertUtils.mostrarError("Selecciona una fecha y una especialidad.");
+                return;
+            }
+
             citaSeleccionada.setFecha(dpFechaCita.getValue().toString());
             citaSeleccionada.setEspecialidad(cbEspecialidad.getValue().getNombre());
 
             CitaDAO.modificarCita(citaSeleccionada);
+
+            AlertUtils.mostrarInformacion("Cita modificada correctamente.");
             mostrarCitas();
+            limpiarCajas();
+
+        } catch (Exception e) {
+            AlertUtils.mostrarError("Error al modificar la cita: " + e.getMessage());
         }
     }
 
+
     @FXML
     private void borrarCita() {
-        Cita citaSeleccionada = tvCitasPaciente.getSelectionModel().getSelectedItem();
-        if (citaSeleccionada != null) {
+        try {
+            Cita citaSeleccionada = tvCitasPaciente.getSelectionModel().getSelectedItem();
+
+            if (citaSeleccionada == null) {
+                AlertUtils.mostrarError("Por favor, selecciona una cita que deseas eliminar.");
+                return;
+            }
+
             CitaDAO.borrarCita(citaSeleccionada.getIdCita());
+
+            AlertUtils.mostrarInformacion("Cita eliminada correctamente.");
             mostrarCitas();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Elegir cita te quire eliminar ");
-            alert.showAndWait();
+            limpiarCajas();
+
+        } catch (Exception e) {
+            AlertUtils.mostrarError("Error al eliminar la cita: " + e.getMessage());
         }
     }
 
@@ -116,5 +156,8 @@ public class CitaController {
         }
     }
 
-
+    private void limpiarCajas() {
+        dpFechaCita.setValue(null);
+        cbEspecialidad.setValue(null);
+    }
 }

@@ -1,14 +1,6 @@
 package org.example.practicanosqlyubo.util;
 
-/**
- * ClassName: HashUtil
- * Package: org.example.practicanosqlyubo.util
- * Description:
- *
- * @Author Yubo
- * @Create 13/10/2025 22:09
- * @Version 1.0
- */
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
