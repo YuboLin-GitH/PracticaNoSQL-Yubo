@@ -1,18 +1,43 @@
 package org.example.practicanosqlyubo;
 
+import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.example.practicanosqlyubo.domain.Especialidad;
+import org.example.practicanosqlyubo.util.ConnectionDB;
 import org.example.practicanosqlyubo.util.HashUtil;
+
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrearPerfi {
-    public static void main(String[] args) {
-        MongoClient con = new MongoClient("localhost", 27017);
+
+public class CargarEspeciaYCrearPerfil {
+    public static void main(String[] args) throws Exception {
+        MongoClient con = ConnectionDB.conectar();
+        if (con == null) {
+            System.err.println("No se pudo conectar a MongoDB.");
+            return;
+        }
         MongoDatabase db = con.getDatabase("centro_medico");
-        System.out.println("Conectada correctamente a la BD");
+        MongoCollection<Document> col = db.getCollection("especialidades");
+
+        // Leer JSON con Gson
+        Gson gson = new Gson();
+        Reader reader = new FileReader("src/main/resources/BaseDatos/especialidades.json");
+        Especialidad[] especialidades = gson.fromJson(reader, Especialidad[].class);
+
+        // Insertar cada una en Mongo
+        for (Especialidad e : especialidades) {
+            Document doc = new Document("nombre", e.getNombre());
+            col.insertOne(doc);
+        }
+
+        System.out.println("Especialidades cargadas correctamente.");
+
 
         // Insertar Pacientes
         MongoCollection<Document> colPaciente = db.getCollection("pacientes");
@@ -60,6 +85,8 @@ public class CrearPerfi {
         }
         colCita.insertMany(listaCita);
         System.out.println("Citas creadas correctamente.");
+
+
 
         con.close();
     }
